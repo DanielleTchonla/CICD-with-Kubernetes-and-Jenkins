@@ -12,8 +12,8 @@ pipeline {
         stage('Build and push Docker image') {
 
       steps {
-        sh 'docker build -t danielletchonla/nissi-image:latest .'
-        sh 'docker push danielletchonla/nissi-image:latest'
+        sh 'docker buildx build --platform linux/amd64,linux/arm64 -t'
+        sh 'your-docker-username/slick-image:latest --push' 
       }
     }
 
