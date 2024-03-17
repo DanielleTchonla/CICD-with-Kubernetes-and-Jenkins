@@ -11,7 +11,7 @@ pipeline {
 
     stage('Build') {
             steps {
-                git 'https://github.com/DanielleTchonla/CICD-with-Kubernetes-and-Jenkins.git'
+                git branch: 'main', url: https://github.com/DanielleTchonla/CICD-with-Kubernetes-and-Jenkins.git'
             }
         }
     stage('Deploy to CloudFormation') {
