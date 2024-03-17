@@ -1,0 +1,29 @@
+
+#with loadbalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: slick-app
+  namespace: default
+spec:
+  type: LoadBalancer  # Change service type to LoadBalancer
+  selector:
+    app: slick
+  ports:
+    - port: 80  # Port through which the Service is accessible within the cluster
+      targetPort: 80  # Target port on Pods
+
+# #With Nodeport
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: slick-app
+#   namespace: default
+# spec:
+#   type: NodePort
+#   selector:
+#     app: slick
+#   ports:
+#     - port: 80  # Port through which the Service is accessible within the cluster
+#       targetPort: 80  # Target port on Pods
+#       nodePort: 30000 # NodePort accessible externally

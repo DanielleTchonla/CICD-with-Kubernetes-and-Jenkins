@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slick-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matclearchLabels:
+      app: slick
+  template:
+    metadata:
+      labels:
+        app: slick
+    spec:
+      containers:
+      - name: my-app-container
+        image: danielletchonla/slick-image:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
