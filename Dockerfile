@@ -7,12 +7,13 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
 # Copy the application files
-COPY index.html .
-COPY license.txt .
-COPY js/ js/
-COPY img/ img/
-COPY css/ css/
-COPY fonts/ fonts/
+COPY webapp/index.html .
+COPY webapp/license.txt .
+COPY webapp/js/ js/
+COPY webapp/js/ js/
+COPY webapp/img/ img/
+COPY webapp/css/ css/
+COPY webapp/fonts/ fonts/
 
 # Expose the port your app runs on
 EXPOSE 80
