@@ -12,7 +12,6 @@ pipeline {
         stage('Build and push Docker image') {
 
       steps {
-
         sh 'docker build -t danielletchonla/nissi-image:latest .'
         sh 'docker push danielletchonla/nissi-image:latest'
       }
@@ -38,14 +37,14 @@ pipeline {
     //   }
     // }
 
-  post {
-    success {
-      echo 'Danielle, your Deployment succeeded!'
-    }
-    failure {
-      echo 'Mme F, your Deployment failed!'
-    }
-  }
+//   post {
+//     success {
+//       echo 'Danielle, your Deployment succeeded!'
+//     }
+//     failure {
+//       echo 'Mme F, your Deployment failed!'
+//     }
+//   }
 //   }
   }
 }
