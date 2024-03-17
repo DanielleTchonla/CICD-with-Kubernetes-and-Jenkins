@@ -8,14 +8,21 @@ pipeline {
   }
 
   stages {
+
+    stage('Build') {
+            steps {
+                git 'https://github.com/DanielleTchonla/CICD-with-Kubernetes-and-Jenkins.git'
+            }
+        }
     stage('Deploy to CloudFormation') {
       steps {
         script {
           withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'Jenkins-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-            sh "aws cloudformation deploy --stack-name newstack1 --template-file webapp --region \"${AWS_REGION}\""
-            sh "aws cloudformation deploy --stack-name App --template-file Dockerfile --region \"${AWS_REGION}\""
-            sh "aws cloudformation deploy --stack-name rds --template-file deployment.yml --region \"${AWS_REGION}\""
-            sh "aws cloudformation deploy --stack-name ssm --template-file service.yml --region \"${AWS_REGION}\""
+            // sh "aws cloudformation deploy --stack-name newstack1 --template-file webapp --region \"${AWS_REGION}\""
+            // sh "aws cloudformation deploy --stack-name App --template-file Dockerfile --region \"${AWS_REGION}\""
+            // sh "aws cloudformation deploy --stack-name rds --template-file deployment.yml --region \"${AWS_REGION}\""
+            // sh "aws cloudformation deploy --stack-name ssm --template-file service.yml --region \"${AWS_REGION}\""
+            sh 'kubectl apply -f deployment.yml' 
         }
       }
     }
@@ -31,3 +38,20 @@ pipeline {
   }
   }
 }
+
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 git 'https://github.com/DanielleTchonla/CICD-with-Kubernetes-and-Jenkins.git'
+//             }
+//         }
+//         stage('Deploy') {
+//             steps {
+//                 sh 'kubectl apply -f deployment.yml'
+//             }
+//         }
+//     }
+// }
