@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: my-app-container
-        image: danielletchonla/slick-image:latest
+        image: danielletchonla/nissi-image:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
