@@ -22,7 +22,7 @@ pipeline {
             // sh "aws cloudformation deploy --stack-name App --template-file Dockerfile --region \"${AWS_REGION}\""
             // sh "aws cloudformation deploy --stack-name rds --template-file deployment.yml --region \"${AWS_REGION}\""
             // sh "aws cloudformation deploy --stack-name ssm --template-file service.yml --region \"${AWS_REGION}\""
-            sh 'kubectl apply -f deployment.yml' 
+            // sh 'kubectl apply -f deployment.yml' 
             sh "aws cloudformation deploy --stack-name deployment --template-file deployment.yml --region \"${AWS_REGION}\""
         }
       }
