@@ -5,6 +5,7 @@ pipeline {
 
   environment {
     AWS_REGION = 'us-east-1'
+    DOCKER_REGISTRY = "docker.io"
   }
 //Build Docker image
   stages {
@@ -16,7 +17,9 @@ pipeline {
     //   }
         steps {
             script {
-            // Use docker build command instead of docker buildx
+                // Log in to Docker registry using Jenkins credentials
+                    docker.withRegistry('https://${DOCKER_REGISTRY}', 'danielletchonla') {
+            // Build and push Docker image
                 sh 'docker build -t danielletchonla/nissi-image:latest .'
                 sh 'docker push danielletchonla/nissi-image:latest'
         }
