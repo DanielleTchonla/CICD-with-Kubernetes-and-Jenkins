@@ -56,7 +56,6 @@ pipeline {
 //   }
   }
 }}
-}
 
 
 // pipeline {
@@ -76,3 +75,4 @@ pipeline {
 //         }
 //     }
 // }
+}
