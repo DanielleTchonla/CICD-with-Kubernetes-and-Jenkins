@@ -6,13 +6,8 @@ pipeline {
         sh 'docker build -t nissi .' 
       }
     }
-    stage('Push') {
-      steps {
-        sh 'docker push nissi'
-      }
-    }
 
-     stage('Push image') {
+    stage('Push image') {
         withDockerRegistry([ credentialsId: "danielletchonla", url: "https://hub.docker.com/repository/docker/danielletchonla/nissi/" ]) {
         bat "docker push danielletchonla/nissi:latest"
         }
@@ -25,4 +20,5 @@ pipeline {
       }
     }
   }
+}
 }
