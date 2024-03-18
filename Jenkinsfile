@@ -20,8 +20,8 @@ pipeline {
                 // Log in to Docker registry using Jenkins credentials
                     docker.withRegistry('https://${DOCKER_REGISTRY}', 'danielletchonla') {
             // Build and push Docker image
-                sh 'docker build -t danielletchonla/nissi-image:latest .'
-                sh 'docker push danielletchonla/nissi-image:latest'
+                sh 'docker build -t danielletchonla/slick-image:v1.0 .'
+                sh 'docker push danielletchonla/slick-image:v1.0 '
         }
     }
 
