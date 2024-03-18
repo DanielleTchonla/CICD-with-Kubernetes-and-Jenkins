@@ -10,7 +10,7 @@ pipeline {
     stage('Push image') {
       steps {
         withDockerRegistry([ credentialsId: "danielletchonla", url: "https://index.docker.io/v1/" ]) {
-          sh "docker push danielletchonla/slick-image:latest"
+          sh "docker push danielletchonla/slick-image:v1.0"
         }
       }
     }
