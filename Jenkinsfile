@@ -10,7 +10,7 @@ pipeline {
     stage('Push image') {
       steps {
         withDockerRegistry([ credentialsId: "danielletchonla", url: "https://index.docker.io/v1/" ]) {
-          bat "docker push danielletchonla/nissi:latest"
+          sh "docker push danielletchonla/nissi:latest"
         }
       }
     }
