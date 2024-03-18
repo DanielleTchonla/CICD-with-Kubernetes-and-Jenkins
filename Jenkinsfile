@@ -29,8 +29,7 @@ pipeline {
 
         steps {
         eksDeploy(
-          configs: 'eks/deployment.yml',
-          configs: 'eks/service.yml',
+          configs: ['eks/deployment.yml', 'eks/service.yml'],
           kubeconfigId: 'my-kubeconfig'
         )
 
