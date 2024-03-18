@@ -8,10 +8,12 @@ pipeline {
     }
 
     stage('Push image') {
+      steps {
         withDockerRegistry([ credentialsId: "danielletchonla", url: "https://hub.docker.com/repository/docker/danielletchonla/nissi/" ]) {
-        bat "docker push danielletchonla/nissi:latest"
+          bat "docker push danielletchonla/nissi:latest"
         }
-
+      }
+    }
 
     stage('Deploy') {
       steps {
@@ -20,5 +22,4 @@ pipeline {
       }
     }
   }
-}
 }
