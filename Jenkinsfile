@@ -1,28 +1,78 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t slick-image .' 
-      }
+    agent any
+    
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1'
     }
-
-    stage('Push image') {
-      steps {
-        withDockerRegistry([ credentialsId: "danielletchonla", url: "https://index.docker.io/v1/" ]) {
-          sh "docker push danielletchonla/slick-image:v1.0"
+    
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t slick-image .'
+            }
         }
-      }
-    }
 
-    stage('Deploy') {
-      steps {
-        // sh 'kubectl apply -f deployment.yml'
-        // sh 'kubectl apply -f service.yml'
-        sh 'kubectl apply --validate=false -f deployment.yml' // Temporarily disable validation
-        sh 'kubectl apply --validate=false -f service.yml' // Temporarily disable validation
-        
-      }
+        stage('Push image') {
+            steps {
+                withDockerRegistry([ credentialsId: "danielletchonla", url: "https://index.docker.io/v1/" ]) {
+                    sh "docker push danielletchonla/slick-image:v1.0"
+                }
+            }
+        }
+
+        stage('Deploy to EKS') {
+            steps {
+                script {
+                    // Authenticate with AWS using Jenkins credentials
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'danielle']]) {
+                        // Use kubectl command with specific context to deploy to EKS
+                        sh 'kubectl apply -f deployment.yaml'
+                        sh 'kubectl apply -f service.yaml'
+                    }
+                }
+            }
+        }
     }
-  }
 }
+
+
+
+
+// pipeline {
+//   agent any
+//       environment {
+//         AWS_DEFAULT_REGION = 'us-east-1'
+//     }
+//   stages {
+//     stage('Build') {
+//       steps {
+//         sh 'docker build -t slick-image .' 
+//       }
+//     }
+
+//     stage('Push image') {
+//       steps {
+//         withDockerRegistry([ credentialsId: "danielletchonla", url: "https://index.docker.io/v1/" ]) {
+//           sh "docker push danielletchonla/slick-image:v1.0"
+//         }
+//       }
+//     }
+
+//     stage('Deploy to EKS') {
+//       steps {
+//           script {
+//               // Authenticate with AWS using Jenkins credentials
+//               withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'danielle']]) {
+//               // Use kubectl command to deploy to EKS
+//                   sh 'kubectl apply -f deployment.yaml'
+//                   sh 'kubectl apply -f service.yaml'
+//                     }
+//                 }
+        
+        
+//       }
+//     }
+//   }
+// }
+
+
