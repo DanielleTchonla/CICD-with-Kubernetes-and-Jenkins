@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Authenticate with AWS using Jenkins credentials
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'danielle']]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'eks-jenkins']]) {
                         // Use kubectl command with specific context to deploy to EKS
                         sh 'kubectl config set-context --current --namespace=${KUBE_NAMESPACE}'
                         sh 'kubectl apply -f deployment.yaml'
