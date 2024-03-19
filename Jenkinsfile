@@ -5,8 +5,8 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-1'
         K8S_NAMESPACE = 'test'
         EKS_CLUSTER_NAME = 'nisssi-cluster'
-        DEPLOYMENT_YML_PATH = 'path/to/deployment.yaml'
-        SERVICE_YML_PATH = 'path/to/service.yaml'
+        DEPLOYMENT_YML_PATH = 'deployment.yml'
+        SERVICE_YML_PATH = 'service.yml'
     }
     
     stages {
