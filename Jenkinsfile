@@ -27,18 +27,21 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 script {
-                    //Authenticate with AWS using Jenkins credentials
+                    // Authenticate with AWS using Jenkins credentials
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'Danielle']]) {
-                    withEnv(['PATH+EXTRA=/usr/local/bin']) {
-
-                        // Update kubeconfig for the EKS cluster (assuming AWS CLI is configured)
-                        sh "aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}"
-                        // Create the namespace if it doesn’t exist
-                        sh "kubectl create namespace ${K8S_NAMESPACE}"
-                        // Apply deployment YAML
-                        sh "kubectl apply -f ${DEPLOYMENT_YML_PATH} -n ${K8S_NAMESPACE}"
-                        // Apply service YAML
-                        sh "kubectl apply -f ${SERVICE_YML_PATH} -n ${K8S_NAMESPACE}"
+                        withEnv(['PATH+EXTRA=/usr/local/bin']) {
+                            // Update kubeconfig for the EKS cluster (assuming AWS CLI is configured)
+                            sh "aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}"
+                            
+                            // Check if namespace exists before attempting to create it
+                            sh "kubectl get namespace ${K8S_NAMESPACE} || kubectl create namespace ${K8S_NAMESPACE}"
+                            
+                            // Apply deployment YAML
+                            sh "kubectl apply -f ${DEPLOYMENT_YML_PATH} -n ${K8S_NAMESPACE}"
+                            
+                            // Apply service YAML
+                            sh "kubectl apply -f ${SERVICE_YML_PATH} -n ${K8S_NAMESPACE}"
+                        }
                     }
                 }
             }
