@@ -3,7 +3,9 @@ pipeline {
     
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
-        KUBE_NAMESPACE = 'default' // Kubernetes namespace to deploy to
+        //KUBE_NAMESPACE = 'default' // Kubernetes namespace to deploy to
+        K8S_NAMESPACE = 'test'
+        EKS_CLUSTER_NAME = 'nisssi-cluster'
     }
     
     stages {
@@ -23,19 +25,33 @@ pipeline {
 
         stage('Deploy to EKS') {
             steps {
+                // script {
+                //     // Authenticate with AWS using Jenkins credentials
+                //     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'Danielle']]) {
+                //         // Use kubectl command with specific context to deploy to EKS
+                //         sh 'kubectl config set-context --current --namespace=${KUBE_NAMESPACE}'
+                //         sh 'kubectl apply -f deployment.yaml'
+                //         sh 'kubectl apply -f service.yaml'
+                //     }
+                // }
                 script {
-                    // Authenticate with AWS using Jenkins credentials
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'Danielle']]) {
-                        // Use kubectl command with specific context to deploy to EKS
-                        sh 'kubectl config set-context --current --namespace=${KUBE_NAMESPACE}'
-                        sh 'kubectl apply -f deployment.yaml'
-                        sh 'kubectl apply -f service.yaml'
-                    }
-                }
+                    withEnv([‘PATH+EXTRA=/usr/local/bin’]) {
+                        // Update kubeconfig for the EKS cluster (assuming AWS CLI is configured)
+                        sh “aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}”
+                        // Create the namespace if it doesn’t exist
+                        sh “kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -”
+                        // Apply deployment YAML
+                        sh “kubectl apply -f ${DEPLOYMENT_YAML_PATH} -n ${K8S_NAMESPACE}”
+                        sh “kubectl apply -f ${SERVICE_YAML_PATH} -n ${K8S_NAMESPACE}”
+          }
+        }
             }
         } 
     }
 }
+
+
+
 
 
 
