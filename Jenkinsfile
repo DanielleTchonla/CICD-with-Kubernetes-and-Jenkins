@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
-        K8S_NAMESPACE = 'test'
+        K8S_NAMESPACE = 'default'
         EKS_CLUSTER_NAME = 'nisssi-cluster'
         DEPLOYMENT_YML_PATH = 'deployment.yml'
         SERVICE_YML_PATH = 'service.yml'
