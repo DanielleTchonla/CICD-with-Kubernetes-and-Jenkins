@@ -27,7 +27,10 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 script {
+                    //Authenticate with AWS using Jenkins credentials
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'Danielle']]) {
                     withEnv(['PATH+EXTRA=/usr/local/bin']) {
+
                         // Update kubeconfig for the EKS cluster (assuming AWS CLI is configured)
                         sh "aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}"
                         // Create the namespace if it doesn’t exist
