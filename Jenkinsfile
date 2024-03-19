@@ -3,6 +3,7 @@ pipeline {
     
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
+        KUBE_NAMESPACE = 'default' // Kubernetes namespace to deploy to
     }
     
     stages {
@@ -26,12 +27,13 @@ pipeline {
                     // Authenticate with AWS using Jenkins credentials
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'danielle']]) {
                         // Use kubectl command with specific context to deploy to EKS
+                        sh 'kubectl config set-context --current --namespace=${KUBE_NAMESPACE}'
                         sh 'kubectl apply -f deployment.yaml'
                         sh 'kubectl apply -f service.yaml'
                     }
                 }
             }
-        }
+        } 
     }
 }
 
