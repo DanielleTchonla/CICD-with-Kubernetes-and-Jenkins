@@ -13,6 +13,7 @@ spec:
     - port: 80  # Port through which the Service is accessible within the cluster
       targetPort: 80  # Target port on Pods
 
+
 # #With Nodeport
 # apiVersion: v1
 # kind: Service
